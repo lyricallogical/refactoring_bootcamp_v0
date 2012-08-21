@@ -135,11 +135,10 @@ class Employee
   end
 
   def get_work_month(year, month)
-    result = {}
-    _get_members.each do |member|
-      result[member.name] = month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)
+    _get_members.group_by{|member| member.name }.map{|members|
+      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
+      month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)
     end
-    result
   end
 end
 
