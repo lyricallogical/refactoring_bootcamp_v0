@@ -51,7 +51,7 @@ class Employee
     month + year * 12 >= enter_at.month + enter_at.year * 12 + 6
   end
   
-  def calculate_bonus(base, factor)
+  def calculate_payment_with_bonus(base, factor)
     base * case factor
       when 1
         1.1
