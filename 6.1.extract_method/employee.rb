@@ -79,19 +79,15 @@ class Employee
   end
 
   def get_payment(year, month)
-    result = {}
-    @employee_db.each do |member|
+    @employee_db.group_by{|member| member.name }.map{|members|
+      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
       payment = if got_bonus?(member.enter_at)
          calculate_payment_with_bonus(member.payment_base, member.bonus_factor)
       else
          calculate_payment(member.payment_base)
       end
-
-      payment *= payment_revision_factor(member.position)
-
-      result[member.name] = payment
+      payment * payment_revision_factor(member.position)
     end
-    result
   end
   
   # 関数内関数にしたいができない ruby のバカ
