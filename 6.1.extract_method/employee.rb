@@ -51,6 +51,10 @@ class Employee
     month + year * 12 >= enter_at.month + enter_at.year * 12 + 6
   end
   
+  def calculate_payment(base)
+    base
+  end
+  
   def calculate_payment_with_bonus(base, factor)
     base * case factor
       when 1
@@ -84,7 +88,7 @@ class Employee
       payment = if got_bonus?(member.enter_at)
          calculate_payment_with_bonus(member.payment_base, member.bonus_factor)
       else
-         member.payment_base
+         calculate_payment(member.payment_base)
       end
 
       payment *= payment_revision_factor(member.position)
