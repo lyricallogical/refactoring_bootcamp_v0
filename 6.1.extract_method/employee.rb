@@ -112,6 +112,11 @@ class Employee
     # この month と year どっからきてんだ
     month + year * 12 >= enter_at.month + enter_at.year * 12 + 6
   end
+  
+  def calculate_holiday_bonus(enter_at)
+    # この month と year どっからきてんだ
+    (month + year * 12 - (enter_at.month + enter_at.year * 12)) / 12 + 1
+  end
 
   def get_holiday(year, month)
     result = {}
@@ -119,7 +124,7 @@ class Employee
       holiday = 10
 
       if got_holidary_bonus?(member.enter_at)
-        holiday += (month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)) / 12 + 1
+        holiday += calculate_holidary_bonus(member.enter_at)
       end
 
       result[member.name] = holiday + holiday_revision(member.position)
