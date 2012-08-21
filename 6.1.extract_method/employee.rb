@@ -107,14 +107,18 @@ class Employee
       0
     end
   end
+  
+  def got_holiday_bonus?(enter_at)
+    # この month と year どっからきてんだ
+    month + year * 12 >= enter_at.month + enter_at.year * 12 + 6
+  end
 
   def get_holiday(year, month)
     result = {}
     @employee_db.each do |member|
       holiday = 10
 
-      # 半年以上勤め上げれば休暇日数増加
-      if month + year * 12 >= member.enter_at.month + member.enter_at.year * 12 + 6
+      if got_holidary_bonus?(member.enter_at)
         holiday += (month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)) / 12 + 1
       end
 
