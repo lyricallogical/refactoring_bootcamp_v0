@@ -45,22 +45,29 @@ class Employee
     end
     result
   end
+  
+  def calculate_bonus(base, factor)
+    base * case factor
+      when 1
+        1.1
+      when 2
+        1.2
+      when 3
+        1.3
+      else
+        1
+      end
+    end
+  end
 
   def get_payment(year, month)
     result = {}
     @employee_db.each do |member|
-      payment = member.payment_base
-
       # 半年以上勤め上げればボーナスが付く
-      if month + year * 12 >= member.enter_at.month + member.enter_at.year * 12 + 6
-         case member.bonus_factor
-         when 1
-           payment *= 1.1
-         when 2
-           payment *= 1.2
-         when 3
-           payment *= 1.3
-         end
+      payment = if month + year * 12 >= member.enter_at.month + member.enter_at.year * 12 + 6
+         calculate_payment_with_bonus(member.payment_base, member.bonus_factor)
+      else
+         member.payment_base
       end
 
       # 役職毎の給料増額
