@@ -65,7 +65,7 @@ class Employee
     end
   end
   
-  def payment_revision(position)
+  def payment_revision_factor(position)
    case position
     when :section_manager
       2
@@ -87,7 +87,7 @@ class Employee
          member.payment_base
       end
 
-      payment *= payment_revision(member.position)
+      payment *= payment_revision_factor(member.position)
 
       result[member.name] = payment
     end
