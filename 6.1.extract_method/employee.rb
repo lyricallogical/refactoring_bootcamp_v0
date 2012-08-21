@@ -95,7 +95,7 @@ class Employee
   end
   
   # 関数内関数にしたいができない ruby のバカ
-  def holiday_bonus(position)
+  def holiday_revision(position)
     case position
     when :section_manager
       -5
@@ -118,7 +118,7 @@ class Employee
         holiday += (month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)) / 12 + 1
       end
 
-      result[member.name] = holiday + holiday_bonus(member.position)
+      result[member.name] = holiday + holiday_revision(member.position)
     end
     result
   end
