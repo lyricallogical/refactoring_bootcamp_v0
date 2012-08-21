@@ -133,11 +133,15 @@ class Employee
       holiday + holiday_revision(member.position)
     }
   end
+  
+  def calculate_work_months(enter_at)
+    month + year * 12 - (enter_at.month + enter_at.year * 12)
+  end
 
   def get_work_month(year, month)
     _get_members.group_by{|member| member.name }.map{|members|
       member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
-      month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)
+      calculate_work_months(member.enter_at)
     end
   end
 end
