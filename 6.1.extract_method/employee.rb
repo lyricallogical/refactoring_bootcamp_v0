@@ -134,7 +134,7 @@ class Employee
   end
 
   def get_holiday(year, month)
-    map_members.map{|member|
+    map_members{|member|
       holiday = base_holiday
       if got_holidary_bonus?(member.enter_at)
         holiday += calculate_holidary_bonus(member.enter_at)
