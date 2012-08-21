@@ -114,7 +114,7 @@ class Employee
         holiday += (month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)) / 12 + 1
       end
 
-      result[member.name] = holiday + holiday_bonus(position)
+      result[member.name] = holiday + holiday_bonus(member.position)
     end
     result
   end
