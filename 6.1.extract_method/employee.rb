@@ -76,6 +76,20 @@ class Employee
     end
     result
   end
+  
+  # 関数内関数にしたいができない ruby のバカ
+  def bonus(position)
+    case position
+    when :section_manager
+      -5
+    when :group_leader
+      -2
+    when :general_manager
+      -10
+    else
+      0
+    end
+  end
 
   def get_holiday(year, month)
     result = {}
@@ -87,16 +101,7 @@ class Employee
         holiday += (month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)) / 12 + 1
       end
 
-      # 役職によっては忙しいので休暇が実質無くなっていく
-      if member.position == :section_manager
-        holiday -= 5
-      elsif member.position == :group_leader
-        holiday -= 2
-      elsif member.position == :general_manager
-        holiday -= 10
-      end
-
-      result[member.name] = holiday
+      result[member.name] = holiday + bonus(position)
     end
     result
   end
