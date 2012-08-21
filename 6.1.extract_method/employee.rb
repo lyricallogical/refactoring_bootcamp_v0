@@ -38,8 +38,13 @@ class Employee
     @employee_db = MockEmployeeDB.new
   end
 
+  def _get_members
+    @employee_db
+  end
+  
+  # ほんとは get_member_names だよねえ
   def get_members
-    @employee_db.map{|member| member.name }
+    _get_members.map{|member| member.name }
   end
   
   def got_bonus?(enter_at)
@@ -79,7 +84,7 @@ class Employee
   end
 
   def get_payment(year, month)
-    @employee_db.group_by{|member| member.name }.map{|members|
+    _get_members.group_by{|member| member.name }.map{|members|
       member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
       payment = if got_bonus?(member.enter_at)
          calculate_payment_with_bonus(member.payment_base, member.bonus_factor)
@@ -119,7 +124,7 @@ class Employee
   end
 
   def get_holiday(year, month)
-    @employee_db.group_by{|member| member.name }.map{|members|
+    _get_members.group_by{|member| member.name }.map{|members|
       holiday = base_holiday
       member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
       if got_holidary_bonus?(member.enter_at)
@@ -131,7 +136,7 @@ class Employee
 
   def get_work_month(year, month)
     result = {}
-    @employee_db.each do |member|
+    _get_members.each do |member|
       result[member.name] = month + year * 12 - (member.enter_at.month + member.enter_at.year * 12)
     end
     result
