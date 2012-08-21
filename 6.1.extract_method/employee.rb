@@ -42,6 +42,17 @@ class Employee
     @employee_db
   end
   
+  # TODO: alpha conversion
+  def map_members(&block)
+    # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
+    name_and_results = _get_members.group_by{|member| member.name }.map{|name, members|
+      member = members.first
+      result = yield(member)
+      [name, result]
+     }
+     Hash[*name_and_results.flatten]
+  end
+
   # ほんとは get_member_names だよねえ
   def get_members
     _get_members.map{|member| member.name }
@@ -84,8 +95,7 @@ class Employee
   end
 
   def get_payment(year, month)
-    _get_members.group_by{|member| member.name }.map{|members|
-      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
+    map_members{|member|
       payment = if got_bonus?(member.enter_at)
          calculate_payment_with_bonus(member.payment_base, member.bonus_factor)
       else
@@ -124,9 +134,8 @@ class Employee
   end
 
   def get_holiday(year, month)
-    _get_members.group_by{|member| member.name }.map{|members|
+    map_members.map{|member|
       holiday = base_holiday
-      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
       if got_holidary_bonus?(member.enter_at)
         holiday += calculate_holidary_bonus(member.enter_at)
       end
@@ -139,8 +148,7 @@ class Employee
   end
 
   def get_work_month(year, month)
-    _get_members.group_by{|member| member.name }.map{|members|
-      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
+    map_members{|member|
       calculate_work_months(member.enter_at)
     end
   end
