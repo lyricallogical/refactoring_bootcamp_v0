@@ -123,17 +123,14 @@ class Employee
   end
 
   def get_holiday(year, month)
-    result = {}
-    @employee_db.each do |member|
+    @employee_db.group_by{|member| member.name }.map{|members|
       holiday = base_holiday
-
+      member = members.first # name の一意性の保障はどこにもないけどまあ元のコードがアレなので知らん
       if got_holidary_bonus?(member.enter_at)
         holiday += calculate_holidary_bonus(member.enter_at)
       end
-
-      result[member.name] = holiday + holiday_revision(member.position)
-    end
-    result
+      holiday + holiday_revision(member.position)
+    }
   end
 
   def get_work_month(year, month)
