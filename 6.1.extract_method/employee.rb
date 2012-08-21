@@ -39,11 +39,7 @@ class Employee
   end
 
   def get_members
-    result = []
-    @employee_db.each do |member|
-      result << member.name
-    end
-    result
+    @employee_db.map{|member| member.name }
   end
   
   def got_bonus?(enter_at)
