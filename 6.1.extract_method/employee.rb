@@ -60,7 +60,18 @@ class Employee
     end
   end
   
-  def 
+  def payment_revision(position)
+   case position
+    when :section_manager
+      2
+    when :group_leader
+      1.5
+    when :general_manager
+      10
+    else
+      1
+    end
+  end
 
   def get_payment(year, month)
     result = {}
@@ -72,14 +83,7 @@ class Employee
          member.payment_base
       end
 
-      # 役職毎の給料増額
-      if member.position == :section_manager
-        payment *= 2
-      elsif member.position == :group_leader
-        payment *= 1.5
-      elsif member.position == :general_manager
-        payment *= 10
-      end
+      payment *= payment_revision(member.position)
 
       result[member.name] = payment
     end
